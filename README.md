@@ -4,10 +4,11 @@ Optimally, use pyenv for Python version management, to avoid messy interchange P
 
 ## Steps to start up project
 
+1. `cd` to the project dir
 
-1. `pyenv install 3.7.10` - to tell pyenv to download python 3.7.10 binary
+2. `pyenv install 3.7.10` - to tell pyenv to download python 3.7.10 binary
 
-2. `pyenv local 3.7.10` - to tell pyenv to use only 3.7.10 in this directory
+3. `pyenv local 3.7.10` - to tell pyenv to use only 3.7.10 in this directory
 
 
 Poetry for dependency management, sort of like npm default behavior, where package version is localized based on the directory path, instead of globally.
