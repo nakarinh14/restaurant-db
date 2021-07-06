@@ -3,6 +3,7 @@ import psycopg2.extras
 import os
 
 class Database:
+    connection = None
     def connect(self):
         try:
             if self.connection is None:
