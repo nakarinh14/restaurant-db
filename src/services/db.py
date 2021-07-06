@@ -18,16 +18,19 @@ class Database:
             raise e
         return self.connection
 
-    def execute_statement(self, statement: str):
+    def execute_statement(self, statement: str, values=None):
         """General statement execution for DB."""
         connection = self.connect()
         cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cursor.execute(statement)
+        if values:
+            cursor.execute(statement, values)
+        else:
+            cursor.execute(statement)
         return cursor
 
-    def retrive_rows(self, statement: str):
+    def retrive_rows(self, statement: str, values=None):
         """Run a SQL query to retrieve rows in table."""
-        cursor = self.execute_statement(statement)
+        cursor = self.execute_statement(statement, values)
         results = cursor.fetchall()
         cursor.close()
         return results

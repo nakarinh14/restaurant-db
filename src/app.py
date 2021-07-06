@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import request
 
-from .services import api
+from services import api
 
 app = Flask(__name__)
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 def restaurants():
     restaurant_id = request.args.get('id')
     if not restaurant_id:
-        return api.get_restaurants_api()
+        return api.get_all_restaurants_api()
     else:
         return api.get_restaurants_by_id_api(restaurant_id)
 
