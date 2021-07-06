@@ -36,9 +36,9 @@ class Database:
         cursor.close()
         return results
 
-    def retrive_single(self, statement: str):
+    def retrive_single(self, statement: str, values=None):
         """Run a SQL query to retrieve a single row in table."""
-        cursor = self.execute_statement(statement)
+        cursor = self.execute_statement(statement, values)
         results = cursor.fetchone()
         cursor.close()
         return results
