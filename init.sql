@@ -51,16 +51,16 @@ CREATE TABLE ratings
     score     INT NOT NULL
 );
 
-CREATE TABLE reviews (
-                         review_id       serial PRIMARY KEY,
-                         user_profile_id serial,
-                         restaurant_id   serial,
-                         rating_id       serial,
-                         description     TEXT,
-                         created_on      TIMESTAMP NOT NULL,
-                         FOREIGN KEY (user_profile_id) REFERENCES user_profiles (user_profile_id),
-                         FOREIGN KEY (restaurant_id) REFERENCES restaurants (restaurant_id),
-                         FOREIGN KEY (rating_id) REFERENCES ratings (rating_id)
+CREATE TABLE reviews(
+                        review_id       serial PRIMARY KEY,
+                        user_profile_id serial,
+                        restaurant_id   serial,
+                        rating_id       serial,
+                        description     TEXT,
+                        created_on      TIMESTAMP NOT NULL,
+                        FOREIGN KEY (user_profile_id) REFERENCES user_profiles (user_profile_id),
+                        FOREIGN KEY (restaurant_id) REFERENCES restaurants (restaurant_id),
+                        FOREIGN KEY (rating_id) REFERENCES ratings (rating_id)
 );
 
 INSERT INTO restaurants(name, phone_contact, address, created_on, is_open)

@@ -20,3 +20,10 @@ def restaurants_reviews():
     restaurant_id = request.args.get('id')
     if restaurant_id:
         return api.get_restaurants_review_by_id_api(restaurant_id)
+
+
+@app.route('/restaurants/menus', methods=['GET'])
+def restaurants_menus():
+    restaurant_id = request.args.get('id')
+    if restaurant_id:
+        return api.get_all_menu_by_restaurant_id_api(restaurant_id)
