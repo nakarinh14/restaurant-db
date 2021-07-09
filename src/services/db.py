@@ -50,3 +50,17 @@ class Database:
         self.connection.commit()
         cursor.close()
         return f"{cursor.rowcount} rows affected."
+
+    def insert_row(self, statement: str, values=None):
+        """Run a SQL query to add row to the table and return row id."""
+        cursor = self.execute_statement(statement, values)
+        add_id = cursor.fetchone()[0]
+        self.connection.commit()
+        cursor.close()
+        return add_id
+
+    def delete_row(self, statement: str, values=None):
+        cursor = self.execute_statement(statement, values)
+        self.connection.commit()
+        cursor.close()
+        return
