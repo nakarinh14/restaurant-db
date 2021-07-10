@@ -36,7 +36,7 @@ def delete_review_rating(rating_id: int):
     return database.delete_row("DELETE FROM ratings WHERE rating_id=%s", (rating_id,))
 
 
-def add_restaurant_review(review: Review):
+def add_restaurant_review(review: Review) -> bool:
     rating_id = add_review_rating(review.rating)
     if rating_id is not None:
         review_id = database.insert_row(
@@ -46,6 +46,7 @@ def add_restaurant_review(review: Review):
         if review_id is not None:
             print("Successfully Write a review")
             return True
-    delete_review_rating(rating_id)
+        else:
+            delete_review_rating(rating_id)
     print("Fail to write a review")
     return False
