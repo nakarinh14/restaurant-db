@@ -29,7 +29,11 @@ def get_menu_by_id_api(menu_id: int):
 
 
 def add_review_rating(score: int):
-    return database.insert_row("INSERT INTO ratings(score) VALUES (%s)", (score,))
+    return database.insert_row("INSERT INTO ratings(score) VALUES (%s) RETURNING rating_id", (score,))
+
+
+def delete_review_rating(rating_id: int):
+    return database.delete_row("DELETE FROM ratings WHERE rating_id=%s", (rating_id,))
 
 
 def add_restaurant_review(review: Review):
@@ -37,11 +41,11 @@ def add_restaurant_review(review: Review):
     if rating_id is not None:
         review_id = database.insert_row(
             "INSERT INTO reviews(user_profile_id, restaurant_id, rating_id, description, created_on) VALUES "
-            "(%s, %s, %s, %s, %s::timestamp)",
+            "(%s, %s, %s, %s, %s::timestamp) RETURNING review_id",
             (review.user_profile_id, review.restaurant_id, rating_id, review.description, review.create_on))
         if review_id is not None:
             print("Successfully Write a review")
             return True
-    # TODO: add delete when one of insert is fail
+    delete_review_rating(rating_id)
     print("Fail to write a review")
     return False

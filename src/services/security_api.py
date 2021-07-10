@@ -35,12 +35,13 @@ def add_new_user_api(username: str, password: str):
         return None
     hash_password = hashlib.md5(password.encode())
     return database.insert_row(
-        "INSERT INTO users(username, password) VALUES (%s, %s)", (username, hash_password,))
+        "INSERT INTO users(username, password) VALUES (%s, %s) RETURNING user_id", (username, hash_password,))
 
 
 def add_new_user_profile_api(user_id: int, firstname: str, lastname: str, phone_number: str):
     return database.insert_row(
-        "INSERT INTO user_profiles(user_id, firstname ,lastname, phone_contact) VALUES (%d, %s, %s, %s)",
+        "INSERT INTO user_profiles(user_id, firstname ,lastname, phone_contact) VALUES (%d, %s, %s, %s) RETURNING "
+        "user_profile_id",
         (user_id, firstname, lastname, phone_number,))
 
 
