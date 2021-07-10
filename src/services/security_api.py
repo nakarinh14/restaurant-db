@@ -6,12 +6,30 @@ from .db import Database
 database = Database()
 
 
+def get_user_by_id(user_id: int):
+    return database.retrieve_single("SELECT * FROM users u WHERE u.user_id=%s", (user_id,))
+
+
+def get_user_profile_by_user_id(user_id: int):
+    return database.retrieve_single("SELECT * FROM user_profiles p WHERE p.user_id=%s", (user_id,))
+
+
 def get_user_by_username(username: str):
     return database.retrieve_single("SELECT * FROM users u WHERE u.username=%s", (username,))
 
 
-def is_user_exist(username: str) -> bool:
+def is_user_exist_by_id(user_id: int) -> bool:
+    row = get_user_by_id(user_id)
+    return row is not None
+
+
+def is_user_exist_by_username(username: str) -> bool:
     row = get_user_by_username(username)
+    return row is not None
+
+
+def is_user_profile_exist(user_id: int) -> bool:
+    row = get_user_profile_by_user_id(user_id)
     return row is not None
 
 
@@ -65,5 +83,8 @@ def delete_user_api(user_id):
 def delete_account_api(user_id):
     database.delete_row("DELETE FROM user_profiles p WHERE p.user_id=%s", (user_id,))
     database.delete_row("DELETE FROM users u WHERE u.user_id=%s", (user_id,))
-    # TODO: add feature to check if successfully delete or not
+    if is_user_exist_by_id(user_id) or is_user_profile_exist(user_id):
+        print("Fail to delete an account")
+    else:
+        print("Successfully delete an account")
     return
