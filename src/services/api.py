@@ -1,8 +1,6 @@
-from src.objects.review import Review
 from .db import Database
 
 database = Database()
-
 
 # Don't use string interpolating or concatenation!
 
@@ -28,25 +26,61 @@ def get_menu_by_id_api(menu_id: int):
     return database.retrieve_single("SELECT * FROM menus WHERE menu_id=%s", (menu_id,))
 
 
-def add_review_rating(score: int):
+def add_review_rating_api(score: int):
     return database.insert_row("INSERT INTO ratings(score) VALUES (%s) RETURNING rating_id", (score,))
+
+
+def add_review_api(user_profile_id, restaurant_id, rating_id, description, created_on):
+    return database.insert_row(
+            "INSERT INTO reviews(user_profile_id, restaurant_id, rating_id, description, created_on) VALUES "
+            "(%s, %s, %s, %s, %s::timestamp) RETURNING review_id",
+            (user_profile_id, restaurant_id, rating_id, description, created_on))
 
 
 def delete_review_rating(rating_id: int):
     return database.delete_row("DELETE FROM ratings WHERE rating_id=%s", (rating_id,))
 
 
-def add_restaurant_review(review: Review) -> bool:
-    rating_id = add_review_rating(review.rating)
-    if rating_id is not None:
-        review_id = database.insert_row(
-            "INSERT INTO reviews(user_profile_id, restaurant_id, rating_id, description, created_on) VALUES "
-            "(%s, %s, %s, %s, %s::timestamp) RETURNING review_id",
-            (review.user_profile_id, review.restaurant_id, rating_id, review.description, review.create_on))
-        if review_id is not None:
-            print("Successfully Write a review")
-            return True
-        else:
-            delete_review_rating(rating_id)
-    print("Fail to write a review")
-    return False
+def get_user_by_id_api(user_id: int):
+    return database.retrieve_single("SELECT * FROM users u WHERE u.user_id=%s", (user_id,))
+
+
+def get_user_profile_by_user_id_api(user_id: int):
+    return database.retrieve_single("SELECT * FROM user_profiles p WHERE p.user_id=%s", (user_id,))
+
+
+def get_user_by_username_api(username: str):
+    return database.retrieve_single("SELECT * FROM users u WHERE u.username=%s", (username,))
+
+
+def get_user_id_by_username_api(username: str) -> int:
+    return database.retrieve_single("SELECT user_id FROM users u WHERE u.username=%s", (username,))[0]
+
+
+def get_username_by_id_api(user_id) -> str:
+    return database.retrieve_single("SELECT username FROM users u WHERE u.user_id=%s", (user_id,))[0]
+
+
+def get_password_by_username_api(username: str) -> str:
+    return database.retrieve_single("SELECT password FROM users u WHERE u.username=%s", (username,))[0]
+
+
+def add_user_api(username: str, hash_password: str):
+    database.insert_row(
+        "INSERT INTO users(username, password) VALUES (%s, %s) RETURNING user_id", (username, hash_password))
+
+
+def add_new_user_profile_api(user_id: int, firstname: str, lastname: str, phone_number: str):
+    return database.insert_row(
+        "INSERT INTO user_profiles(user_id, firstname ,lastname, phone_contact) VALUES (%s, %s, %s, %s) RETURNING "
+        "user_profile_id",
+        (user_id, firstname, lastname, phone_number))
+
+
+def delete_user_api(user_id):
+    return database.delete_row("DELETE FROM users u WHERE u.user_id=%s", (user_id,))
+
+
+def delete_account_api(user_id):
+    database.delete_row("DELETE FROM user_profiles p WHERE p.user_id=%s", (user_id,))
+    database.delete_row("DELETE FROM users u WHERE u.user_id=%s", (user_id,)) # TODO: Add ON_DELETE Cascade, with user and user_profile table. Don't need to repeat delete twice.
