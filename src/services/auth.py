@@ -20,25 +20,24 @@ def compare_password(input_password, db_hash_password):
 
 
 def is_user_exist_by_id(user_id: int) -> bool:
-    return api.get_user_by_id_api(user_id) is not None
+    return bool(api.get_user_by_id_api(user_id))
 
 
 def is_user_exist_by_username(username: str) -> bool:
-    return api.get_user_by_username_api(username) is not None
+    return bool(api.get_user_by_username_api(username))
 
 
 def is_user_profile_exist(user_id: int) -> bool:
-    return api.get_user_profile_by_user_id_api(user_id) is not None
+    return bool(api.get_user_profile_by_user_id_api(user_id))
 
 
 def add_new_account(account: UserAccount) -> bool:
     user_id = add_new_user(account.username, account.password)
     profile_id = api.add_new_user_profile_api(user_id, account.firstname, account.lastname, account.phone_number)
-    if user_id is not None and profile_id is not None:
+    if user_id and profile_id:
         print("Successfully register account {}".format(account.username))
         return True
     api.delete_account_api(user_id)
-
     print("Fail to register account {}".format(account.username))
     return False
 
@@ -59,4 +58,3 @@ def delete_account(user_id: int) -> bool:
         return True
     print("Fail to Delete Account {}".format(username))
     return False
-
