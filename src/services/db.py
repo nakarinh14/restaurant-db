@@ -33,16 +33,20 @@ class Database:
     def retrieve_rows(self, statement: str, values=None):
         """Run a SQL query to retrieve rows in table."""
         cursor = self.execute_statement(statement, values)
-        results = cursor.fetchall()
+        results = cursor.fetchall()    
         cursor.close()
-        return results
+        if results is None:
+            results = []
+        return [dict(r) for r in results]
 
     def retrieve_single(self, statement: str, values=None):
         """Run a SQL query to retrieve a single row in table."""
         cursor = self.execute_statement(statement, values)
-        results = cursor.fetchone()
+        result = cursor.fetchone()
         cursor.close()
-        return results
+        if result is None:
+            result = []
+        return dict(result)
 
     def write_rows(self, statement: str):
         """Run a SQL query to update rows in table."""

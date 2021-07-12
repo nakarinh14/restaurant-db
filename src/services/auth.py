@@ -6,28 +6,18 @@ from . import api
 
 
 def authenticate(username: str, password: str) -> bool:
-    if is_user_exist_by_username(username) and check_password_api(username, password):
+    if not username or not password:
+        return False
+    db_user = api.get_user_by_username_api(username)
+    if db_user and compare_password(password, db_user.get('password')):
         print("Successfully Login as {}".format(username))
         return True
     return False
 
 
-def check_password_api(username: str, password: str) -> bool:
-    input_hash_password = hashlib.md5(password.encode()).hexdigest()
-    db_hash_password = api.get_password_by_username_api(username)
+def compare_password(input_password, db_hash_password):
+    input_hash_password = hashlib.md5(input_password.encode()).hexdigest()
     return input_hash_password == db_hash_password
-
-
-def is_user_exist_by_id(user_id: int) -> bool:
-    return api.get_user_by_id_api(user_id) is not None
-
-
-def is_user_exist_by_username(username: str) -> bool:
-    return api.get_user_by_username_api(username) is not None
-
-
-def is_user_profile_exist(user_id: int) -> bool:
-    return api.get_user_profile_by_user_id_api(user_id) is not None
 
 
 def add_new_account(account: UserAccount) -> bool:
@@ -37,12 +27,13 @@ def add_new_account(account: UserAccount) -> bool:
         print("Successfully register account {}".format(account.username))
         return True
     api.delete_account_api(user_id)
+
     print("Fail to register account {}".format(account.username))
     return False
 
 
 def add_new_user(username: str, password: str):
-    if api.get_user_by_username_api(username) is not None:
+    if api.get_user_by_username_api(username):
         print("User already exist")
         return None
     hash_password = hashlib.md5(password.encode()).hexdigest()
@@ -70,3 +61,4 @@ def add_restaurant_review(review: Review) -> bool:
         api.delete_review_rating(rating_id)
     print("Fail to write a review")
     return False
+
