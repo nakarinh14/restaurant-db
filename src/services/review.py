@@ -1,4 +1,4 @@
-from objects.review import Review
+from src.objects.review import Review
 
 from . import api
 
