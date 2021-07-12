@@ -3,6 +3,7 @@ from .db import Database
 
 database = Database()
 
+
 # Don't use string interpolating or concatenation!
 
 def get_all_restaurants_api():
@@ -33,9 +34,9 @@ def add_review_rating_api(score):
 
 def add_review_api(user_profile_id, restaurant_id, rating_id, description, created_on):
     return database.insert_row(
-            "INSERT INTO reviews(user_profile_id, restaurant_id, rating_id, description, created_on) VALUES "
-            "(%s, %s, %s, %s, %s::timestamp) RETURNING review_id",
-            (user_profile_id, restaurant_id, rating_id, description, created_on))
+        "INSERT INTO reviews(user_profile_id, restaurant_id, rating_id, description, created_on) VALUES "
+        "(%s, %s, %s, %s, %s::timestamp) RETURNING review_id",
+        (user_profile_id, restaurant_id, rating_id, description, created_on))
 
 
 def delete_review_rating(rating_id):
@@ -58,22 +59,22 @@ def get_username_by_id_api(user_id) -> str:
     return database.retrieve_single("SELECT username FROM users u WHERE u.user_id=%s", (user_id,))
 
 
-def add_user_api(username, hash_password):
+
+def get_password_by_username_api(username: str) -> str:
+    return database.retrieve_single("SELECT password FROM users u WHERE u.username=%s", (username,))[0]
+
+
+def add_user_api(username: str, hash_password: str):
     return database.insert_row(
-        "INSERT INTO users(username, password) VALUES (%s, %s) RETURNING user_id", (username, hash_password))
+        "INSERT INTO users(username, password) VALUES (%s, %s) RETURNING user_id", (username, hash_password,))
 
-
+  
 def add_new_user_profile_api(user_id, firstname, lastname, phone_number):
     return database.insert_row(
         "INSERT INTO user_profiles(user_id, firstname ,lastname, phone_contact) VALUES (%s, %s, %s, %s) RETURNING "
         "user_profile_id",
-        (user_id, firstname, lastname, phone_number))
-
-
-def delete_user_api(user_id):
-    return database.delete_row("DELETE FROM users u WHERE u.user_id=%s", (user_id,))
+        (user_id, firstname, lastname, phone_number,))
 
 
 def delete_account_api(user_id):
-    database.delete_row("DELETE FROM user_profiles p WHERE p.user_id=%s", (user_id,))
-    database.delete_row("DELETE FROM users u WHERE u.user_id=%s", (user_id,)) # TODO: Add ON_DELETE Cascade, with user and user_profile table. Don't need to repeat delete twice.
+    return database.delete_row("DELETE FROM users u WHERE u.user_id=%s", (user_id,))
