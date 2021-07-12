@@ -4,7 +4,6 @@ from flask import request
 from services import api, auth
 from services.utils import wrap_json_data
 
-
 app = Flask(__name__)
 
 
@@ -12,11 +11,11 @@ app = Flask(__name__)
 def restaurants():
     restaurant_id = request.args.get('id')
     if not restaurant_id:
-        data =  api.get_all_restaurants_api()
+        data = api.get_all_restaurants_api()
         return wrap_json_data(data)
     else:
-        data =  api.get_restaurants_by_id_api(restaurant_id)
-        return wrap_json_data(data) 
+        data = api.get_restaurants_by_id_api(restaurant_id)
+        return wrap_json_data(data)
 
 
 @app.route('/api/restaurants/reviews', methods=['GET'])

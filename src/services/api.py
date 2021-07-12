@@ -59,7 +59,6 @@ def get_username_by_id_api(user_id) -> str:
     return database.retrieve_single("SELECT username FROM users u WHERE u.user_id=%s", (user_id,))
 
 
-
 def get_password_by_username_api(username: str) -> str:
     return database.retrieve_single("SELECT password FROM users u WHERE u.username=%s", (username,))[0]
 

@@ -33,7 +33,7 @@ class Database:
     def retrieve_rows(self, statement: str, values=None):
         """Run a SQL query to retrieve rows in table."""
         cursor = self.execute_statement(statement, values)
-        results = cursor.fetchall()    
+        results = cursor.fetchall()
         cursor.close()
         if results is None:
             results = []
