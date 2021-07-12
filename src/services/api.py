@@ -1,6 +1,5 @@
 from .db import Database
 
-
 database = Database()
 
 
@@ -56,18 +55,22 @@ def get_user_by_username_api(username):
 
 
 def get_username_by_id_api(user_id) -> str:
-    return database.retrieve_single("SELECT username FROM users u WHERE u.user_id=%s", (user_id,))
+    return database.retrieve_single("SELECT username FROM users u WHERE u.user_id=%s", (user_id,)).get('username')
 
 
 def get_password_by_username_api(username: str) -> str:
-    return database.retrieve_single("SELECT password FROM users u WHERE u.username=%s", (username,))[0]
+    return database.retrieve_single("SELECT password FROM users u WHERE u.username=%s", (username,)).get('password')
+
+
+def get_user_id_by_username_api(username: str) -> int:
+    return database.retrieve_single("SELECT user_id FROM users u WHERE u.username=%s", (username,)).get('user_id')
 
 
 def add_user_api(username: str, hash_password: str):
     return database.insert_row(
         "INSERT INTO users(username, password) VALUES (%s, %s) RETURNING user_id", (username, hash_password,))
 
-  
+
 def add_new_user_profile_api(user_id, firstname, lastname, phone_number):
     return database.insert_row(
         "INSERT INTO user_profiles(user_id, firstname ,lastname, phone_contact) VALUES (%s, %s, %s, %s) RETURNING "
