@@ -67,6 +67,19 @@ CREATE TABLE reviews
     FOREIGN KEY (rating_id) REFERENCES ratings (rating_id)
 );
 
+CREATE TABLE restaurant_tags (
+    restaurant_tag_id serial PRIMARY KEY,
+    tag_id serial,
+    restaurant_id serial,
+    FOREIGN KEY (tag_id) REFERENCES tags(tag_id),
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id)
+);
+
+CREATE TABLE tags (
+    tag_id serial PRIMARY KEY,
+    description TEXT
+);
+
 INSERT INTO restaurants(name, phone_contact, address, created_on, is_open)
 VALUES ('Jojo Pizzeria', 7124707705, '4925 Pin Oak Drive Benton Iowa', '2016-06-22'::timestamp, true),
        ('Bubble Seafood', 4154072066, '4295 Locust View Drive San Francisco California', '1999-07-23'::timestamp, true),
