@@ -3,7 +3,7 @@ from flask import request
 
 from services import api, auth
 from services.utils import wrap_json_data
-from src.objects.user_account import UserAccount
+from objects.user_account import UserAccount
 
 app = Flask(__name__)
 
@@ -61,11 +61,11 @@ def restaurants_menus_post():
 
 
 @app.route('/register', methods=['POST'])
-def auth_view():
+def register_view():
     data = request.json
-    if data:
-        keys = ['username', 'password', 'firstname', 'lastname', 'phone_num']
-        account_obj = UserAccount(*[data.get(k) for k in keys])
+    keys = ('username', 'password', 'firstname', 'lastname', 'phone_number')
+    if data and all([k in data for k in keys]):
+        account_obj = UserAccount(**data)
         status = auth.register(account_obj)
         return {'status': status}
 
