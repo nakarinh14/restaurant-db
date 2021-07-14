@@ -3,9 +3,12 @@ from flask import request
 
 from services import api, auth
 from services.utils import wrap_json_data
+from src.objects.user_account import UserAccount
 
 app = Flask(__name__)
 
+
+# Restaurants
 
 @app.route('/api/restaurants', methods=['GET'])
 def restaurants():
@@ -18,6 +21,12 @@ def restaurants():
         return wrap_json_data(data)
 
 
+@app.route('/api/restaurants', methods=['POST'])
+def restaurants_post():
+    # TODO: Add new restaurant
+    data = request.json
+
+
 @app.route('/api/restaurants/reviews', methods=['GET'])
 def restaurants_reviews():
     restaurant_id = request.args.get('id')
@@ -26,12 +35,39 @@ def restaurants_reviews():
         return wrap_json_data(data)
 
 
+@app.route('/api/restaurants/reviews', methods=['POST'])
+def restaurants_reviews_post():
+    # TODO: Add review if exist yet in db, else update
+    data = request.json
+    if data:
+        # Apply review for given restaurant id.
+        pass
+
+
 @app.route('/api/restaurants/menus', methods=['GET'])
 def restaurants_menus():
     restaurant_id = request.args.get('id')
     if restaurant_id:
         data = api.get_all_menu_by_restaurant_id_api(restaurant_id)
         return wrap_json_data(data)
+
+
+@app.route('/api/restaurants/menus', methods=['POST'])
+def restaurants_menus_post():
+    # TODO: Add menu if not exist yet in db, else update
+    data = request.json
+    if data:
+        pass
+
+
+@app.route('/register', methods=['POST'])
+def auth_view():
+    data = request.json
+    if data:
+        keys = ['username', 'password', 'firstname', 'lastname', 'phone_num']
+        account_obj = UserAccount(*[data.get(k) for k in keys])
+        status = auth.register(account_obj)
+        return {'status': status}
 
 
 @app.route('/auth', methods=['POST'])

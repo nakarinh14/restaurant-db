@@ -31,7 +31,7 @@ def is_user_profile_exist(user_id: int) -> bool:
     return bool(api.get_user_profile_by_user_id_api(user_id))
 
 
-def add_new_account(account: UserAccount) -> bool:
+def register(account: UserAccount) -> bool:
     user_id = add_new_user(account.username, account.password)
     profile_id = api.add_new_user_profile_api(user_id, account.firstname, account.lastname, account.phone_number)
     if user_id and profile_id:

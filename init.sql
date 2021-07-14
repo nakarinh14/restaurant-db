@@ -14,7 +14,7 @@ CREATE TABLE restaurants
     name          TEXT UNIQUE NOT NULL,
     phone_contact VARCHAR(10) NOT NULL,
     address       TEXT UNIQUE NOT NULL,
-    created_on    TIMESTAMP   NOT NULL,
+    created_on    TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_open       BOOLEAN     NOT NULL
 );
 
@@ -63,7 +63,7 @@ CREATE TABLE reviews
     restaurant_id   INT REFERENCES restaurants (restaurant_id) NOT NULL,
     rating_id       INT REFERENCES ratings (rating_id)  NOT NULL,
     description     TEXT,
-    created_on      TIMESTAMP NOT NULL
+    created_on      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE tags (

@@ -3,7 +3,7 @@ from .db import Database
 database = Database()
 
 
-# Don't use string interpolating or concatenation!
+# Restaurants
 
 def get_all_restaurants_api():
     return database.retrieve_rows("SELECT * FROM restaurants")
@@ -27,6 +27,9 @@ def get_menu_by_id_api(menu_id):
     return database.retrieve_single("SELECT * FROM menus WHERE menu_id=%s", (menu_id,))
 
 
+# Reviews
+
+
 def add_review_rating_api(score):
     return database.insert_row("INSERT INTO ratings(score) VALUES (%s) RETURNING rating_id", (score,))
 
@@ -40,6 +43,9 @@ def add_review_api(user_profile_id, restaurant_id, rating_id, description, creat
 
 def delete_review_rating(rating_id):
     return database.delete_row("DELETE FROM ratings WHERE rating_id=%s", (rating_id,))
+
+
+# Users
 
 
 def get_user_by_id_api(user_id):
