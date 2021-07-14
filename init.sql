@@ -129,10 +129,11 @@ VALUES (1, 1, 'Garlic Bread', 10),
        (4, 5, 'Sticky Toffee Pudding', 20);
 
 INSERT INTO tags(tag_id,description)
-VALUES (1,'Fast Food'),
-       (2,'Vegan'),
-       (3,'Japanese'),
-       (4,'Italian'),
-       (5,'Steakhouse'),
-       (6,'Casual'),
-       (7,'Formal')
+VALUES (1, 'Fast Food'),
+       (2, 'Vegan'),
+       (3, 'Japanese'),
+       (4, 'Italian'),
+       (5, 'Steakhouse'),
+       (6, 'Casual'),
+       (7, 'Formal'),
+       (8, 'Seafood')

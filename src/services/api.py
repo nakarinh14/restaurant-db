@@ -86,3 +86,11 @@ def add_new_user_profile_api(user_id, firstname, lastname, phone_number):
 
 def delete_account_api(user_id):
     return database.delete_row("DELETE FROM users u WHERE u.user_id=%s", (user_id,))
+
+
+# Tagging
+
+
+def add_tag_to_restaurant(restaurant_id, tag_id):
+    return database.insert_row("INSERT INTO restaurant_tags(tag_id, restaurant_id) "
+                               "VALUES (%s,%s) RETURNING restaurant_tag_id", (tag_id, restaurant_id,))

@@ -8,7 +8,7 @@ def add_restaurant_review(review: Review) -> bool:
     if rating_id is not None:
         review_id = api.add_review_api(review.user_profile_id, review.restaurant_id, review.rating, review.description,
                                        review.created_on)
-        if review_id is not None:
+        if review_id:
             print("Successfully Write a review")
             return True
         api.delete_review_rating(rating_id)
