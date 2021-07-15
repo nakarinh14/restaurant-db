@@ -62,8 +62,13 @@ def restaurants_menus():
 def restaurants_menus_post():
     # TODO: Add menu if not exist yet in db, else update
     data = request.json
-    if data:
-        pass
+    restaurant_id = data.get('restaurant_id')
+    menu_type = data.get('menu_type_id')
+    name = data.get('name')
+    list_pricing = data.get('list_pricing')
+    if not api.is_menu_exist_in_restaurant(name, restaurant_id):
+        status = bool(api.add_new_menu_to_restaurant(restaurant_id, menu_type, name, list_pricing))
+        return {'status': status}
 
 
 @app.route('/register', methods=['POST'])
