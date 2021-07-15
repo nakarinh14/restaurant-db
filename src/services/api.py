@@ -102,3 +102,16 @@ def delete_account_api(user_id):
 def add_tag_to_restaurant(restaurant_id, tag_id):
     return database.insert_row("INSERT INTO restaurant_tags(tag_id, restaurant_id) "
                                "VALUES (%s,%s) RETURNING restaurant_tag_id", (tag_id, restaurant_id,))
+
+
+# menu
+
+def add_new_menu_to_restaurant(restaurant_id, menu_type_id, name, list_pricing):
+    return database.insert_row("INSERT INTO menus(restaurant_id, menu_type_id, name, list_pricing) "
+                               "VALUES (%s,%s,%s,%s) RETURNING menu_id",
+                               (restaurant_id, menu_type_id, name, list_pricing))
+
+
+def is_menu_exist_in_restaurant(menu_name: str, restaurant_id):
+    return bool(database.retrieve_single("SELECT * FROM menus WHERE name=%s AND restaurant_id=%s",
+                                         (menu_name, restaurant_id)))
