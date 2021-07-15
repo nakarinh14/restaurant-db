@@ -1,9 +1,10 @@
 from flask import Flask
 from flask import request
 
+from objects.restaurant import Restaurant
+from objects.user_account import UserAccount
 from services import api, auth
 from services.utils import wrap_json_data
-from objects.user_account import UserAccount
 
 app = Flask(__name__)
 
@@ -25,6 +26,11 @@ def restaurants():
 def restaurants_post():
     # TODO: Add new restaurant
     data = request.json
+    keys = ("name", "phone_contact", "address", "create_on", "is_open")
+    if data and all([k in data for k in keys]):
+        new_restaurant = Restaurant(**data)
+        status = bool(api.add_new_restaurant_api(new_restaurant))
+        return {'status': status}
 
 
 @app.route('/api/restaurants/reviews', methods=['GET'])

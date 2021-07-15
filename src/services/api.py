@@ -1,3 +1,4 @@
+from src.objects.restaurant import Restaurant
 from .db import Database
 
 database = Database()
@@ -25,6 +26,13 @@ def get_all_menu_by_restaurant_id_api(restaurant_id):
 
 def get_menu_by_id_api(menu_id):
     return database.retrieve_single("SELECT * FROM menus WHERE menu_id=%s", (menu_id,))
+
+
+def add_new_restaurant_api(restaurant: Restaurant):
+    return database.insert_row("INSERT INTO restaurants(name, phone_contact, address, created_on, is_open) "
+                               "VALUES (%s, %s, %s, %s::timestamp, %s) RETURNING restaurant_id", (
+                                   restaurant.name, restaurant.phone_contact, restaurant.address, restaurant.create_on,
+                                   restaurant.is_open))
 
 
 # Reviews
