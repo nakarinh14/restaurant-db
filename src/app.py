@@ -2,8 +2,9 @@ from flask import Flask
 from flask import request
 
 from objects.restaurant import Restaurant
+from objects.review import Review
 from objects.user_account import UserAccount
-from services import api, auth
+from services import api, auth, review
 from services.utils import wrap_json_data
 
 app = Flask(__name__)
@@ -31,6 +32,7 @@ def restaurants_post():
         new_restaurant = Restaurant(**data)
         status = bool(api.add_new_restaurant_api(new_restaurant))
         return {'status': status}
+    return {'status': False}
 
 
 @app.route('/api/restaurants/reviews', methods=['GET'])
@@ -45,9 +47,13 @@ def restaurants_reviews():
 def restaurants_reviews_post():
     # TODO: Add review if exist yet in db, else update
     data = request.json
-    if data:
+    keys = ("user_profile_id", "restaurant_id", "rating", "description", "created_on")
+    if data and all([k in data for k in keys]):
         # Apply review for given restaurant id.
-        pass
+        new_review = Review(**data)
+        status = bool(review.add_restaurant_review(new_review))
+        return {'status': status}
+    return {'status': False}
 
 
 @app.route('/api/restaurants/menus', methods=['GET'])
@@ -69,6 +75,7 @@ def restaurants_menus_post():
     if not api.is_menu_exist_in_restaurant(name, restaurant_id):
         status = bool(api.add_new_menu_to_restaurant(restaurant_id, menu_type, name, list_pricing))
         return {'status': status}
+    return {'status': False}
 
 
 @app.route('/register', methods=['POST'])
@@ -79,6 +86,7 @@ def register_view():
         account_obj = UserAccount(**data)
         status = auth.register(account_obj)
         return {'status': status}
+    return {'status': False}
 
 
 @app.route('/auth', methods=['POST'])
