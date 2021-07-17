@@ -1,4 +1,5 @@
-from src.objects.restaurant import Restaurant
+from objects.restaurant import Restaurant
+
 from .db import Database
 
 database = Database()

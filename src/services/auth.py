@@ -1,6 +1,7 @@
 import hashlib
 
-from src.objects.user_account import UserAccount
+from objects.user_account import UserAccount
+
 from . import api
 
 
