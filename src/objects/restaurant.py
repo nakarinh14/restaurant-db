@@ -6,5 +6,4 @@ class Restaurant:
     name: str
     phone_contact: str
     address: str
-    create_on: str
-    is_open: bool
+    user_owner_id: str

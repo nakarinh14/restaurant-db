@@ -25,9 +25,8 @@ def restaurants():
 
 @app.route('/api/restaurants', methods=['POST'])
 def restaurants_post():
-    # TODO: Add new restaurant
     data = request.json
-    keys = ("name", "phone_contact", "address", "create_on", "is_open")
+    keys = ("name", "phone_contact", "address", "user_owner_id")
     if data and all([k in data for k in keys]):
         new_restaurant = Restaurant(**data)
         status = bool(api.add_new_restaurant_api(new_restaurant))
@@ -45,9 +44,8 @@ def restaurants_reviews():
 
 @app.route('/api/restaurants/reviews', methods=['POST'])
 def restaurants_reviews_post():
-    # TODO: Add review if exist yet in db, else update
     data = request.json
-    keys = ("user_profile_id", "restaurant_id", "rating", "description", "created_on")
+    keys = ("user_profile_id", "restaurant_id", "rating", "description")
     if data and all([k in data for k in keys]):
         # Apply review for given restaurant id.
         new_review = Review(**data)
@@ -66,7 +64,6 @@ def restaurants_menus():
 
 @app.route('/api/restaurants/menus', methods=['POST'])
 def restaurants_menus_post():
-    # TODO: Add menu if not exist yet in db, else update
     data = request.json
     restaurant_id = data.get('restaurant_id')
     menu_type = data.get('menu_type_id')

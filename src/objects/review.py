@@ -7,4 +7,3 @@ class Review:
     restaurant_id: str
     rating: str
     description: str
-    created_on: str
