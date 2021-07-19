@@ -96,7 +96,7 @@ VALUES ('Jojo Pizzeria', 7124707705, '4925 Pin Oak Drive Benton Iowa', '2016-06-
        ('Seven Heaven Bar', 7085744652, '4546 Star Route Bridgeview Illinois', '2010-02-13'::timestamp, 2),
        ('Hudson Kitchen', 3202661407, '4849 Newton Street Saint Cloud Minnesota', '2018-05-22'::timestamp, 2),
        ('8MilePi Detroit Style Pizza', 4158535342, '60 Morris St Mission Bay', '2018-05-22'::timestamp, 1),
-       ('Cuisine of Napal', 4156472222, '3486 Mission St Bernal Heights', '2018-05-22'::timestamp, 1),
+       ('Cuisine of Nepal', 4156472222, '3486 Mission St Bernal Heights', '2018-05-22'::timestamp, 1),
        ('Fable', 4155902404, '558 Castro St Castro', '2018-05-22'::timestamp, 1);
 
 INSERT INTO menu_type(name)
@@ -141,16 +141,26 @@ VALUES (1, 1, 'Garlic Bread', 10),
        (4, 3, 'Braised Short Rib', 25),
        (4, 4, 'Mash Potato', 10),
        (4, 4, 'Glaze Wild Mushroom', 10),
-       (4, 5, 'Sticky Toffee Pudding', 20);
+       (4, 5, 'Sticky Toffee Pudding', 20),
+       (5, 4, 'BBQ Style Chicken Wings', 9.75),
+       (5, 3, '3 Cheese Red Top Pizza', 24.75),
+       (5, 3, 'Pepperoni Pie Pizza', 26.75),
+       (5, 3, 'Fun Guy Forno Pizza', 28.75),
+       (5, 3, 'BBQ Chicken Pizza', 28.75);
 
 INSERT INTO tag(description)
-VALUES ('Fast Food'),
+VALUES ('Fast food'),
        ('Vegan'),
        ('Japanese'),
        ('Italian'),
        ('Steakhouse'),
        ('Casual'),
        ('Formal'),
+       ('Sit-down dining'),
+       ('Delivery'),
+       ('Takeout'),
+       ('Indoor dining'),
+       ('Indoor & Outdoor dining'),
        ('Seafood');
 
 INSERT INTO rating(score)
@@ -168,6 +178,9 @@ VALUES (0.0),
 
 INSERT INTO review(user_profile_id, restaurant_id, rating_id, description)
 VALUES (4, 5, 8, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'),
+       (4, 5, 7, 'Being a Windsor resident, I''m a real big Detroit pizza buff. Was massively pleased with 8-mile pizza and how much their quality, accuracy, and authenticity hit the spot on the head...'),
+       (4, 6, 10, 'My husband and I dropped in on a whim for lunch today and had an incredible meal and unlimited real-brewed masala chai to wash it all down. The owner was very friendly and provided...'),
+       (4, 7, 9, 'Our party of six had a great evening. We had reservations for a late Saturday evening. We sat in the back/outdoors which had a pretty relaxing vibe. The food...'),
        (5, 5, 10, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'),
        (6, 5, 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'),
        (7, 5, 6, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.');
