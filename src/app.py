@@ -1,5 +1,5 @@
-from flask import Flask
-from flask import request
+from flask import Flask, request, json
+import decimal
 
 from objects.restaurant import Restaurant
 from objects.review import Review
@@ -7,7 +7,17 @@ from objects.user_account import UserAccount
 from services import api, auth, review
 from services.utils import wrap_json_data
 
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, decimal.Decimal):
+            # Convert decimal instances to strings.
+            return str(obj)
+        return super(CustomJSONEncoder, self).default(obj)
+
+
 app = Flask(__name__)
+app.json_encoder = CustomJSONEncoder
 
 
 # Restaurants
@@ -32,6 +42,14 @@ def restaurants_post():
         status = bool(api.add_new_restaurant_api(new_restaurant))
         return {'status': status}
     return {'status': False}
+
+
+@app.route('/api/restaurants/tag', methods=['GET'])
+def restaurant_tag():
+    restaurant_id = request.args.get('id')
+    if restaurant_id:
+        data = api.get_restaurant_tags_api(restaurant_id)
+        return wrap_json_data(data)
 
 
 @app.route('/api/restaurants/reviews', methods=['GET'])

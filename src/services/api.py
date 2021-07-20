@@ -15,9 +15,21 @@ def get_restaurants_by_id_api(restaurant_id):
     return database.retrieve_single("SELECT * FROM restaurant r WHERE r.restaurant_id=%s", (restaurant_id,))
 
 
+def get_restaurants_first_review_by_id_api(restaurant_id):
+    return database.retrieve_rows(
+        "SELECT rr.review_id, rr.description, rr.created_on, r.score, firstname, lastname FROM review rr "
+        "LEFT JOIN user_profile ON rr.user_profile_id=user_profile.user_profile_id "
+        "LEFT JOIN rating r on rr.rating_id = r.rating_id "
+        "WHERE rr.restaurant_id=%s", (restaurant_id,)
+    )
+
+
 def get_restaurants_review_by_id_api(restaurant_id):
     return database.retrieve_rows(
-        "SELECT * FROM review rr WHERE rr.restaurant_id=%s", (restaurant_id,)
+        "SELECT rr.review_id, rr.description, rr.created_on, r.score, firstname, lastname FROM review rr "
+        "LEFT JOIN user_profile ON rr.user_profile_id=user_profile.user_profile_id "
+        "LEFT JOIN rating r on rr.rating_id = r.rating_id "
+        "WHERE rr.restaurant_id=%s", (restaurant_id,)
     )
 
 
@@ -58,7 +70,7 @@ def delete_review_rating(rating_id):
 
 
 def get_user_by_id_api(user_id):
-    return database.retrieve_single("SELECT * FROM user u WHERE u.user_id=%s", (user_id,))
+    return database.retrieve_single("SELECT * FROM \"user\" u WHERE u.user_id=%s", (user_id,))
 
 
 def get_user_profile_by_user_id_api(user_id):
@@ -66,24 +78,24 @@ def get_user_profile_by_user_id_api(user_id):
 
 
 def get_user_by_username_api(username):
-    return database.retrieve_single("SELECT * FROM user u WHERE u.username=%s", (username,))
+    return database.retrieve_single("SELECT * FROM \"user\" u WHERE u.username=%s", (username,))
 
 
 def get_username_by_id_api(user_id) -> str:
-    return database.retrieve_single("SELECT username FROM user u WHERE u.user_id=%s", (user_id,)).get('username')
+    return database.retrieve_single("SELECT username FROM \"user\" u WHERE u.user_id=%s", (user_id,)).get('username')
 
 
 def get_password_by_username_api(username: str) -> str:
-    return database.retrieve_single("SELECT password FROM user u WHERE u.username=%s", (username,)).get('password')
+    return database.retrieve_single("SELECT password FROM \"user\" u WHERE u.username=%s", (username,)).get('password')
 
 
 def get_user_id_by_username_api(username: str) -> int:
-    return database.retrieve_single("SELECT user_id FROM user u WHERE u.username=%s", (username,)).get('user_id')
+    return database.retrieve_single("SELECT user_id FROM \"user\" u WHERE u.username=%s", (username,)).get('user_id')
 
 
 def add_user_api(username: str, hash_password: str):
     return database.insert_row(
-        "INSERT INTO user(username, password) VALUES (%s, %s) RETURNING user_id", (username, hash_password,))
+        "INSERT INTO \"user\"(username, password) VALUES (%s, %s) RETURNING user_id", (username, hash_password,))
 
 
 def add_new_user_profile_api(user_id, firstname, lastname, phone_number):
@@ -94,7 +106,7 @@ def add_new_user_profile_api(user_id, firstname, lastname, phone_number):
 
 
 def delete_account_api(user_id):
-    return database.delete_row("DELETE FROM user u WHERE u.user_id=%s", (user_id,))
+    return database.delete_row("DELETE FROM \"user\" u WHERE u.user_id=%s", (user_id,))
 
 
 # Tagging
@@ -103,6 +115,13 @@ def delete_account_api(user_id):
 def add_tag_to_restaurant(restaurant_id, tag_id):
     return database.insert_row("INSERT INTO restaurant_tag(tag_id, restaurant_id) "
                                "VALUES (%s,%s) RETURNING restaurant_tag_id", (tag_id, restaurant_id,))
+
+
+def get_restaurant_tags_api(restaurant_id):
+    return database.retrieve_rows(
+        "SELECT t.* FROM restaurant_tag rt LEFT JOIN tag t on rt.tag_id = t.tag_id WHERE restaurant_id=(%s)",
+        (restaurant_id,)
+    )
 
 
 # menu
