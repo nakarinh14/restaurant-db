@@ -1,5 +1,6 @@
-from flask import Flask, request, json
 import decimal
+
+from flask import Flask, request, json
 
 from objects.restaurant import Restaurant
 from objects.review import Review
@@ -67,7 +68,7 @@ def restaurants_reviews_post():
     if data and all([k in data for k in keys]):
         # Apply review for given restaurant id.
         new_review = Review(**data)
-        status = bool(review.add_restaurant_review(new_review))
+        status = review.add_restaurant_review(new_review)
         return {'status': status}
     return {'status': False}
 
@@ -110,3 +111,8 @@ def auth_view():
     if credentials:
         status = auth.authenticate(credentials.get('username'), credentials.get('password'))
         return {'status': status}
+
+
+if __name__ == '__main__':
+    # run app in debug mode on port 5000
+    app.run(debug=True, port=5000)
